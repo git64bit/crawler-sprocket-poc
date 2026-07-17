@@ -6,30 +6,39 @@ A parametric OpenSCAD project for proof-of-concept crawler sprockets made from s
 
 The sole requirement at this stage is **functional proof of concept**:
 
-- the tooth pockets must engage a matching conceptual track bushing;
+- tooth pockets must engage a matching conceptual track bushing;
 - models must regenerate from parameters rather than global scaling;
 - large sprockets must split into printable segments;
-- the printed part must contain a connected casting cavity;
+- each printed shell must have a connected cavity and a completely open upper face;
+- concrete must be accessible for pouring, leveling, adding, removing, and manual balancing;
 - the same codebase must support approximately 20–25 future variants and several profile families.
 
 This repository does **not** claim production strength, fatigue life, wear resistance, vehicle safety, or compatibility with Caterpillar equipment. “Crawler” is used generically.
 
-## Batch 001
+## Current batch
 
-Batch 001 establishes the project skeleton and a working geometry generator:
+Batch 002 replaces the default block-like circular-pocket tooth with a thick,
+tapered, rounded tooth family and changes the default 24-inch example from 21
+to 19 teeth.
 
-- three demonstration sizes;
-- normalized profile presets;
-- pitch-derived sprocket diameter;
-- circular bushing-pocket profile matching the first concept image;
-- hollow printed shell with top and bottom skins;
-- concrete-core preview volume;
-- automatic casting fill and vent openings;
-- complete, segmented, and two-tooth coupon outputs;
-- nominal bushing preview;
-- geometry validation and dimensional console output.
+The default 19-tooth model uses 19 identical one-tooth segments. This avoids
+unequal segment shapes when using a prime tooth count.
 
-The circular-pocket profile is intentionally simple. Generated entry and exit flanks belong in a later batch.
+All shell, segment, and coupon outputs now have:
+
+- one bottom skin;
+- perimeter and pocket walls;
+- no top skin;
+- no separate fill or vent ports.
+
+The complete upper face is the casting and balancing opening.
+
+See:
+
+- `docs/BATCH_001.md`
+- `docs/BATCH_002.md`
+- `docs/DESIGN_RULES.md`
+- `docs/PROJECT_SCOPE.md`
 
 ## Folder structure
 
@@ -45,17 +54,20 @@ crawler-sprocket-poc/
 │   ├── sprocket_math.scad
 │   └── validation.scad
 ├── profiles/
-│   └── circular_pocket.scad
+│   ├── circular_pocket.scad
+│   └── rounded_lobe.scad
 ├── parts/
 │   ├── preview.scad
 │   ├── segmentation.scad
 │   └── sprocket.scad
 ├── docs/
 │   ├── BATCH_001.md
+│   ├── BATCH_002.md
 │   ├── DESIGN_RULES.md
 │   ├── PROJECT_SCOPE.md
 │   └── reference/
-│       └── first-attempt.png
+│       ├── first-attempt.png
+│       └── batch-001-render.png
 ├── exports/
 └── renders/
 ```
@@ -66,25 +78,27 @@ crawler-sprocket-poc/
 2. Leave the initial settings:
 
    ```scad
-   variant_name_selected = "POC_24IN_21T";
+   variant_name_selected = "POC_24IN_19T";
    output_mode = "segment";
    segment_index = 0;
    ```
 
 3. Press **F5** for preview.
 4. Press **F6** for render.
-5. Export the segment as STL.
-6. Change `output_mode` to `coupon` and render the two-tooth test piece.
-7. Change `output_mode` to `assembly_preview` to inspect the full segmented ring.
+5. Confirm the tooth tapers toward a rounded tip.
+6. Confirm the entire upper face is open.
+7. Export the segment as STL.
+8. Change `output_mode` to `coupon` and repeat.
+9. Change `output_mode` to `assembly_preview` to inspect all 19 segments.
 
 ## Available output modes
 
 | Mode | Purpose |
 |---|---|
 | `full_solid` | Solid reference sprocket |
-| `full_shell` | Complete hollow printed shell |
-| `segment` | One printable shell segment |
-| `coupon` | Two-tooth fit and casting test |
+| `full_shell` | Complete open-top printed shell |
+| `segment` | One open-top printable shell segment |
+| `coupon` | Open-top two-tooth fit and casting test |
 | `core` | Volume intended to become concrete |
 | `assembly_preview` | All shell segments assembled |
 | `shell_core_preview` | Transparent shell with concrete core |
@@ -102,7 +116,7 @@ The controlling dimensions are:
 - tooth count;
 - link gap and side clearance;
 - central opening;
-- printed wall and skin dimensions;
+- printed wall and bottom skin;
 - segment count and usable printer width;
 - selected profile preset.
 
@@ -114,14 +128,15 @@ D_p = pitch / sin(180 / teeth)
 
 ## Adding a profile
 
-For Batch 001, all presets use the `circular_pocket` generator. Each preset changes normalized values for:
+Profile presets are stored in `config/profiles.scad`. Profile generators are
+stored separately under `profiles/` and dispatched from
+`sprocket_profile_2d()`.
 
-- radial pocket clearance;
-- tooth-tip height;
-- pocket-center radial shift.
+Batch 002 contains:
 
-Later profile generators should be added as separate files under `profiles/`, then dispatched from `sprocket_profile_2d()`.
+- `circular_pocket` — the Batch 001 reference geometry;
+- `rounded_lobe` — a separately generated thick tooth with tapered sides and a rounded tip.
 
 ## Repository rule
 
-The GitHub commit accepted after testing becomes the single source of truth for the next batch. Future changes should be delivered in small, testable batches.
+The GitHub commit accepted after testing becomes the single source of truth for the next batch. Future changes are delivered in small, testable batches.

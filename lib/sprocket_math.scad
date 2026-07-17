@@ -3,27 +3,31 @@
     OpenSCAD trigonometric functions use degrees.
 */
 
-function variant_name(c)       = c[V_NAME];
-function pitch(c)              = c[V_PITCH];
-function bushing_d(c)          = c[V_BUSHING_D];
-function teeth(c)              = c[V_TEETH];
-function link_gap(c)           = c[V_LINK_GAP];
-function side_clearance(c)     = c[V_SIDE_CLR];
-function inner_d(c)            = c[V_INNER_D];
-function inner_radius(c)       = inner_d(c) / 2;
-function shell_wall(c)         = c[V_SHELL_WALL];
-function skin(c)               = c[V_SKIN];
-function configured_segments(c)= c[V_SEGMENTS];
-function bed_usable(c)         = c[V_BED_USABLE];
-function profile_name(c)       = c[V_PROFILE];
-function fill_port_d(c)        = c[V_FILL_PORT_D];
-function vent_port_d(c)        = c[V_VENT_PORT_D];
+function variant_name(c)        = c[V_NAME];
+function pitch(c)               = c[V_PITCH];
+function bushing_d(c)           = c[V_BUSHING_D];
+function teeth(c)               = c[V_TEETH];
+function link_gap(c)            = c[V_LINK_GAP];
+function side_clearance(c)      = c[V_SIDE_CLR];
+function inner_d(c)             = c[V_INNER_D];
+function inner_radius(c)        = inner_d(c) / 2;
+function shell_wall(c)          = c[V_SHELL_WALL];
+function skin(c)                = c[V_SKIN];
+function configured_segments(c) = c[V_SEGMENTS];
+function bed_usable(c)          = c[V_BED_USABLE];
+function profile_name(c)        = c[V_PROFILE];
+function fill_port_d(c)         = c[V_FILL_PORT_D];
+function vent_port_d(c)         = c[V_VENT_PORT_D];
 
-function selected_profile(c)   = profile_by_name(profile_name(c));
-function profile_generator(c)  = selected_profile(c)[P_GENERATOR];
-function radial_clearance(c)   = selected_profile(c)[P_RADIAL_CLR_R] * pitch(c);
-function tip_height(c)         = selected_profile(c)[P_TIP_HEIGHT_R] * pitch(c);
-function seat_shift(c)         = selected_profile(c)[P_SEAT_SHIFT_R] * pitch(c);
+function selected_profile(c)    = profile_by_name(profile_name(c));
+function profile_generator(c)   = selected_profile(c)[P_GENERATOR];
+function radial_clearance(c)    = selected_profile(c)[P_RADIAL_CLR_R] * pitch(c);
+function tip_height(c)          = selected_profile(c)[P_TIP_HEIGHT_R] * pitch(c);
+function seat_shift(c)          = selected_profile(c)[P_SEAT_SHIFT_R] * pitch(c);
+function body_over_root(c)      = selected_profile(c)[P_BODY_OVER_ROOT_R] * pitch(c);
+function root_half_angle_ratio(c)= selected_profile(c)[P_ROOT_HALF_ANGLE_R];
+function tip_half_angle_ratio(c)= selected_profile(c)[P_TIP_HALF_ANGLE_R];
+function tooth_round_radius(c)  = selected_profile(c)[P_TOOTH_ROUND_R] * pitch(c);
 
 function tooth_angle(c) = 360 / teeth(c);
 
@@ -46,8 +50,20 @@ function tip_radius(c) =
 
 function outside_diameter(c) = 2 * tip_radius(c);
 
+function tooth_body_radius(c) =
+    root_radius(c) + body_over_root(c);
+
+function tooth_root_half_angle(c) =
+    tooth_angle(c) * root_half_angle_ratio(c);
+
+function tooth_tip_half_angle(c) =
+    tooth_angle(c) * tip_half_angle_ratio(c);
+
 function face_width(c) =
     link_gap(c) - 2 * side_clearance(c);
+
+function core_height(c) =
+    face_width(c) - skin(c);
 
 function auto_segment_count(c) =
     bed_usable(c) >= outside_diameter(c)

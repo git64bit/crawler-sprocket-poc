@@ -16,7 +16,10 @@ The variants may differ in:
 
 ## Current functional requirement
 
-A model is successful when it can be generated, segmented, printed as a shell, assembled, filled with a cast material, and used to demonstrate mechanical engagement at low speed and low consequence.
+A model is successful when it can be generated, segmented, printed as a shell,
+assembled, filled from an open upper face, manually balanced by adding or
+removing fill, and used to demonstrate mechanical engagement at low speed and
+low consequence.
 
 There is currently no requirement for:
 
@@ -33,7 +36,7 @@ The system separates four concerns:
 
 1. **Variant configuration** — dimensions and selected profile.
 2. **Profile generation** — the 2D tooth and pocket outline.
-3. **Part construction** — solid body, shell, cavity, and ports.
+3. **Part construction** — solid body, open-top shell, and casting cavity.
 4. **Manufacturing output** — segments, coupons, and previews.
 
 This separation prevents a change in tooth profile from requiring a rewrite of casting or segmentation code.

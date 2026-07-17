@@ -1,9 +1,8 @@
 /*
-    Initial proof-of-concept tooth profile.
+    Circular-pocket reference profile and profile dispatcher.
 
-    Circular pockets are subtracted at the pitch locations. This reproduces
-    the design logic of the first uploaded model and provides a stable base
-    for later generated engagement profiles.
+    The circular-pocket generator is retained for comparison with the first
+    concept. New profile families are dispatched from sprocket_profile_2d().
 */
 
 module circular_pocket_profile_2d(c) {
@@ -24,6 +23,8 @@ module sprocket_profile_2d(c) {
 
     if (generator == "circular_pocket") {
         circular_pocket_profile_2d(c);
+    } else if (generator == "rounded_lobe") {
+        rounded_lobe_profile_2d(c);
     } else {
         assert(false, str("Unsupported profile generator: ", generator));
     }

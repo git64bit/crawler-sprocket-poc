@@ -1,6 +1,6 @@
 /*
     Crawler Sprocket POC
-    Batch 001
+    Batch 002
 
     Open this file in OpenSCAD, select a variant and output mode, press F6,
     then export the result as STL.
@@ -11,6 +11,7 @@ include <config/profiles.scad>
 include <config/variants.scad>
 include <lib/sprocket_math.scad>
 include <lib/validation.scad>
+include <profiles/rounded_lobe.scad>
 include <profiles/circular_pocket.scad>
 include <parts/sprocket.scad>
 include <parts/segmentation.scad>
@@ -18,7 +19,7 @@ include <parts/preview.scad>
 
 // ---------- USER CONTROLS ----------
 
-variant_name_selected = "POC_24IN_21T";
+variant_name_selected = "POC_24IN_19T";
 
 // full_solid, full_shell, segment, coupon, core,
 // assembly_preview, shell_core_preview
