@@ -28,6 +28,19 @@ module validate_variant(c) {
             "Rounded-lobe tip half-angle ratio must be positive.");
     }
 
+    if (profile_generator(c) == "open_valley") {
+        assert(valley_exit_width(c) > valley_throat_width(c),
+            "Open-valley mouth must be wider than its bushing throat.");
+        assert(valley_tip_opening(c) < tip_pitch_chord(c),
+            "Open-valley mouth consumes the entire tooth pitch.");
+        assert(tip_tooth_width(c) > 2 * shell_wall(c),
+            "Open-valley tooth tip is too narrow for the printed shell.");
+        assert(root_tooth_width(c) > 2 * shell_wall(c),
+            "Open-valley tooth root is too narrow for the printed shell.");
+        assert(valley_hull_dx(c) > valley_hull_dr(c),
+            "Open-valley hull circles overlap too aggressively for a tangent flank.");
+    }
+
     echo("----- CRAWLER SPROCKET POC -----");
     echo("Variant", variant_name(c));
     echo("Profile", profile_name(c));
@@ -39,6 +52,16 @@ module validate_variant(c) {
     echo("Shell top", "OPEN");
     echo("Segments", n);
     echo("Outer chord per segment (mm)", segment_chord(c));
+
+    if (profile_generator(c) == "open_valley") {
+        echo("Bushing diameter (mm)", bushing_d(c));
+        echo("Valley throat width (mm)", valley_throat_width(c));
+        echo("Valley exit-circle width (mm)", valley_exit_width(c));
+        echo("Valley opening at tooth tips (mm)", valley_tip_opening(c));
+        echo("Minimum bushing path clearance (mm)", bushing_path_clearance(c));
+        echo("Approximate tooth root width (mm)", root_tooth_width(c));
+        echo("Approximate tooth tip width (mm)", tip_tooth_width(c));
+    }
 
     if (segment_chord(c) > bed_usable(c))
         echo("WARNING: segment outer chord exceeds configured usable bed width.");

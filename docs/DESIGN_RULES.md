@@ -16,4 +16,6 @@
     remain explicit profile parameters.
 14. Prime tooth counts require either unequal multi-tooth segments or one segment
     per tooth. Prefer identical one-tooth segments for the current POC.
-15. Each development batch must be small enough to test before the next batch begins.
+15. Every functional valley must provide a continuous bushing path; a widened outer slit alone is not sufficient.
+16. Every new profile must include a direct fit-preview or equivalent interference check.
+17. Each development batch must be small enough to test before the next batch begins.

@@ -1,6 +1,6 @@
 /*
     Crawler Sprocket POC
-    Batch 002
+    Batch 003 replacement
 
     Open this file in OpenSCAD, select a variant and output mode, press F6,
     then export the result as STL.
@@ -11,6 +11,7 @@ include <config/profiles.scad>
 include <config/variants.scad>
 include <lib/sprocket_math.scad>
 include <lib/validation.scad>
+include <profiles/open_valley.scad>
 include <profiles/rounded_lobe.scad>
 include <profiles/circular_pocket.scad>
 include <parts/sprocket.scad>
@@ -22,19 +23,33 @@ include <parts/preview.scad>
 variant_name_selected = "POC_24IN_19T";
 
 // full_solid, full_shell, segment, coupon, core,
-// assembly_preview, shell_core_preview
-output_mode = "segment";
+// assembly_preview, shell_core_preview, fit_preview
+output_mode = "fit_preview";
 
 // Used only when output_mode == "segment".
 segment_index = 0;
 
-// Shows the nominal bushings for visual fit checking.
+// Shows all nominal seated bushings for visual fit checking.
 // Keep false when exporting an STL.
 show_bushings = false;
 
 // Preview resolution. Reduce $fs for smoother final exports.
 $fa = 4;
 $fs = 1.0;
+
+// ---------- PROFILE DISPATCH ----------
+
+module sprocket_profile_2d(c) {
+    if (profile_generator(c) == "open_valley") {
+        open_valley_profile_2d(c);
+    } else if (profile_generator(c) == "rounded_lobe") {
+        rounded_lobe_profile_2d(c);
+    } else if (profile_generator(c) == "circular_pocket") {
+        circular_pocket_profile_2d(c);
+    } else {
+        assert(false, str("Unknown profile generator: ", profile_generator(c)));
+    }
+}
 
 // ---------- BUILD ----------
 
@@ -55,10 +70,14 @@ validate_variant(c) {
         assembly_preview(c);
     } else if (output_mode == "shell_core_preview") {
         shell_and_core_preview(c);
+    } else if (output_mode == "fit_preview") {
+        color([0.82, 0.62, 0.08])
+            two_tooth_coupon(c, shell = true);
+        preview_bushing_path(c, pocket_index = 0);
     } else {
         assert(false, str("Unknown output_mode: ", output_mode));
     }
 
-    if (show_bushings && output_mode != "core")
+    if (show_bushings && output_mode != "core" && output_mode != "fit_preview")
         preview_bushings(c);
 }

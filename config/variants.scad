@@ -15,9 +15,9 @@ variants = [
         "POCKET_SHALLOW", 0, 0],
 
     // 19 one-tooth segments keep every printed segment identical.
-    // Pitch is selected to retain an approximately 24-inch outside diameter.
+    // The open-valley profile gives the bushing a continuous exit path.
     ["POC_24IN_19T", 94.7, 48, 19, 78, 1.5, 410, 3.2, 3.2, 19, 320,
-        "ROUNDED_THICK", 0, 0],
+        "OPEN_VALLEY_STANDARD", 0, 0],
 
     ["POC_48IN_25T", 150, 76, 25, 110, 2.0, 860, 4.0, 4.0, 25, 320,
         "POCKET_DEEP", 0, 0]
