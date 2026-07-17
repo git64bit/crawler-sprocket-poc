@@ -1,0 +1,69 @@
+/*
+    Shared parameter accessors and geometry calculations.
+    OpenSCAD trigonometric functions use degrees.
+*/
+
+function variant_name(c)       = c[V_NAME];
+function pitch(c)              = c[V_PITCH];
+function bushing_d(c)          = c[V_BUSHING_D];
+function teeth(c)              = c[V_TEETH];
+function link_gap(c)           = c[V_LINK_GAP];
+function side_clearance(c)     = c[V_SIDE_CLR];
+function inner_d(c)            = c[V_INNER_D];
+function inner_radius(c)       = inner_d(c) / 2;
+function shell_wall(c)         = c[V_SHELL_WALL];
+function skin(c)               = c[V_SKIN];
+function configured_segments(c)= c[V_SEGMENTS];
+function bed_usable(c)         = c[V_BED_USABLE];
+function profile_name(c)       = c[V_PROFILE];
+function fill_port_d(c)        = c[V_FILL_PORT_D];
+function vent_port_d(c)        = c[V_VENT_PORT_D];
+
+function selected_profile(c)   = profile_by_name(profile_name(c));
+function profile_generator(c)  = selected_profile(c)[P_GENERATOR];
+function radial_clearance(c)   = selected_profile(c)[P_RADIAL_CLR_R] * pitch(c);
+function tip_height(c)         = selected_profile(c)[P_TIP_HEIGHT_R] * pitch(c);
+function seat_shift(c)         = selected_profile(c)[P_SEAT_SHIFT_R] * pitch(c);
+
+function tooth_angle(c) = 360 / teeth(c);
+
+function pitch_radius(c) =
+    pitch(c) / (2 * sin(180 / teeth(c)));
+
+function pitch_diameter(c) = 2 * pitch_radius(c);
+
+function pocket_radius(c) =
+    bushing_d(c) / 2 + radial_clearance(c);
+
+function seat_center_radius(c) =
+    pitch_radius(c) + seat_shift(c);
+
+function root_radius(c) =
+    seat_center_radius(c) - pocket_radius(c);
+
+function tip_radius(c) =
+    pitch_radius(c) + tip_height(c);
+
+function outside_diameter(c) = 2 * tip_radius(c);
+
+function face_width(c) =
+    link_gap(c) - 2 * side_clearance(c);
+
+function auto_segment_count(c) =
+    bed_usable(c) >= outside_diameter(c)
+        ? 1
+        : ceil(180 / asin(min(1, bed_usable(c) / outside_diameter(c))));
+
+function segment_count(c) =
+    configured_segments(c) > 0
+        ? configured_segments(c)
+        : auto_segment_count(c);
+
+function segment_angle(c) = 360 / segment_count(c);
+
+function segment_chord(c, n = segment_count(c)) =
+    n == 1
+        ? outside_diameter(c)
+        : 2 * tip_radius(c) * sin(180 / n);
+
+function body_fn(c) = max(180, teeth(c) * 24);
