@@ -2,7 +2,8 @@
 
 ## Purpose
 
-Create a reusable OpenSCAD system capable of producing approximately 20–25 proof-of-concept crawler-frame sprocket variants.
+Create a reusable OpenSCAD system capable of producing approximately 20–25
+proof-of-concept crawler-frame idler variants.
 
 The variants may differ in:
 
@@ -10,33 +11,42 @@ The variants may differ in:
 - track pitch;
 - tooth count;
 - bushing diameter;
-- tooth-pocket or engagement profile;
-- printed segment count;
-- shell and casting geometry.
+- valley or engagement profile;
+- cast-module geometry;
+- wear-liner geometry;
+- carrier and side-plate geometry; and
+- printable mold segmentation.
 
 ## Current functional requirement
 
-A model is successful when it can be generated, segmented, printed as a shell,
-assembled, filled from an open upper face, manually balanced by adding or
-removing fill, and used to demonstrate mechanical engagement at low speed and
-low consequence.
+A model is successful when it can be generated from parameters, divided into
+manufacturable parts, assembled around a separate carrier, and used to
+demonstrate passive track engagement in both directions.
+
+The idlers are not powered. Bearings are external to the wheel body. Concrete
+or grout provides local backing in the tooth modules rather than a precision
+bearing seat or a drive-torque path.
 
 There is currently no requirement for:
 
 - rated torque;
 - service life;
 - structural certification;
-- road or work-site operation;
 - production wear resistance;
-- compatibility with commercial Caterpillar undercarriage parts.
+- compatibility with commercial Caterpillar undercarriage parts; or
+- a final commercial hub or bearing selection.
 
 ## Architecture
 
-The system separates four concerns:
+The system separates five concerns:
 
-1. **Variant configuration** — dimensions and selected profile.
-2. **Profile generation** — the 2D tooth and pocket outline.
-3. **Part construction** — solid body, open-top shell, and casting cavity.
-4. **Manufacturing output** — segments, coupons, and previews.
+1. **Variant configuration** — track dimensions and selected profile.
+2. **Profile generation** — the 2D tooth and valley outline.
+3. **Idler architecture** — cast modules, wear liners, carrier plates, and
+   registration geometry.
+4. **Manufacturing output** — removable molds, individual parts, and previews.
+5. **External hardware interface** — reference hub and shaft geometry without a
+   press fit in printed or cast material.
 
-This separation prevents a change in tooth profile from requiring a rewrite of casting or segmentation code.
+This separation prevents a change in track profile from requiring a rewrite of
+the carrier, mold, or hub-interface code.

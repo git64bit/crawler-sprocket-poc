@@ -17,30 +17,29 @@ This repository does **not** claim production strength, fatigue life, wear resis
 
 ## Current batch
 
-Batch 003 replaces the rejected enclosed-pocket approach with an `open_valley`
-profile.
+Batch 004 keeps the accepted 19-tooth `open_valley` profile and adds the first
+complete passive-idler architecture.
 
-The new valley is generated as the convex hull of:
+The new assembly separates:
 
-- a circular bushing seat centered on the pitch circle; and
-- a larger exit circle located completely outside the tooth tips.
+- cast tooth modules;
+- replaceable valley liners;
+- a removable open-top TPU mold;
+- two rigid side plates;
+- an inner registration ring;
+- threaded clamping rods; and
+- a reference metal hub and rotating shaft.
 
-This creates a continuous swept opening. The bushing is no longer surrounded by
-a circular pocket with a shallow slit added to its outside.
-
-The default 24-inch proof-of-concept remains:
-
-- 19 teeth;
-- 19 identical one-tooth segments;
-- an open upper casting face;
-- one bottom skin;
-- no separate fill or vent ports.
+Bearings remain external to the idler body. No press fit is required in concrete
+or printed plastic.
 
 See:
 
 - `docs/BATCH_001.md`
 - `docs/BATCH_002.md`
 - `docs/BATCH_003.md`
+- `docs/BATCH_004.md`
+- `docs/IDLER_ARCHITECTURE.md`
 - `docs/DESIGN_RULES.md`
 - `docs/PROJECT_SCOPE.md`
 - `docs/GITHUB_WEB_UPLOAD.md`
@@ -52,9 +51,11 @@ crawler-sprocket-poc/
 ├── main.scad
 ├── VERSION
 ├── config/
+│   ├── idler_architectures.scad
 │   ├── profiles.scad
 │   └── variants.scad
 ├── lib/
+│   ├── idler_math.scad
 │   ├── indices.scad
 │   ├── sprocket_math.scad
 │   └── validation.scad
@@ -63,6 +64,7 @@ crawler-sprocket-poc/
 │   ├── open_valley.scad
 │   └── rounded_lobe.scad
 ├── parts/
+│   ├── idler_architecture.scad
 │   ├── preview.scad
 │   ├── segmentation.scad
 │   └── sprocket.scad
@@ -70,7 +72,9 @@ crawler-sprocket-poc/
 │   ├── BATCH_001.md
 │   ├── BATCH_002.md
 │   ├── BATCH_003.md
+│   ├── BATCH_004.md
 │   ├── DESIGN_RULES.md
+│   ├── IDLER_ARCHITECTURE.md
 │   ├── GITHUB_WEB_UPLOAD.md
 │   ├── PROJECT_SCOPE.md
 │   └── reference/
@@ -85,16 +89,17 @@ crawler-sprocket-poc/
 
    ```scad
    variant_name_selected = "POC_24IN_19T";
-   output_mode = "fit_preview";
+   output_mode = "idler_assembly_preview";
    ```
 
 3. Press **F5**, then **F6**.
-4. Confirm that four translucent bushing positions form an unobstructed radial path through the center valley.
-5. Change `output_mode` to `segment` and render again.
-6. Confirm the upper casting face remains open.
-7. Change `output_mode` to `coupon` and render again.
+4. Confirm the 19 gray cast modules, 19 orange valley liners, two side plates,
+   inner registration ring, threaded-rod references, hub references, and shaft.
+5. Change `output_mode` to `idler_exploded_preview` and inspect the component
+   separation.
+6. Test `cast_module`, `wear_liner`, and `tpu_mold` individually.
 
-Do not export `fit_preview`; it contains reference bushings.
+Preview and reference modes are not exportable production hardware.
 
 ## Available output modes
 
@@ -108,6 +113,16 @@ Do not export `fit_preview`; it contains reference bushings.
 | `assembly_preview` | All shell segments assembled |
 | `shell_core_preview` | Transparent shell with concrete core |
 | `fit_preview` | Coupon plus a four-position bushing travel check |
+| `idler_assembly_preview` | Complete Batch 004 idler architecture |
+| `idler_exploded_preview` | Separated architecture inspection |
+| `cast_module` | One cast tooth module |
+| `wear_liner` | One replaceable valley saddle |
+| `tpu_mold` | One open-top removable mold |
+| `side_plate` | One rigid carrier plate |
+| `registration_ring` | Inner module registration and spacing ring |
+| `hub_reference` | Non-production hub reference |
+| `rod_core_reference` | Reference pin for the molded module hole |
+| `reinforcement_preview` | Module with fiberglass placement reference |
 
 ## Adding a variant
 

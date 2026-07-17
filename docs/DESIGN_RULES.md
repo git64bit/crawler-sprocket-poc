@@ -19,3 +19,8 @@
 15. Every functional valley must provide a continuous bushing path; a widened outer slit alone is not sufficient.
 16. Every new profile must include a direct fit-preview or equivalent interference check.
 17. Each development batch must be small enough to test before the next batch begins.
+18. The accepted open-valley track interface must remain separate from the idler carrier architecture.
+19. Replaceable wear liners must not depend on exposed fasteners in the bushing path.
+20. Bearings remain external to the cast and printed wheel body.
+21. Side plates, registration features, and threaded rods locate and clamp the assembly; concrete does not provide a precision bearing seat.
+22. Fiberglass reinforcement and removable threaded rods have separate functions and must not be treated as interchangeable.

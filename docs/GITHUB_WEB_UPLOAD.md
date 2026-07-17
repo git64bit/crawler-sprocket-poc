@@ -1,6 +1,7 @@
 # GitHub Web Upload
 
-This project assumes Windows and GitHub website access. No command line is required.
+This project assumes Windows and GitHub website access. No command line is
+required.
 
 ## Replace the repository files
 
@@ -9,7 +10,8 @@ This project assumes Windows and GitHub website access. No command line is requi
 3. Open the GitHub repository in a browser.
 4. Select **Add file**, then **Upload files**.
 5. Drag the contents inside the extracted project folder into the upload area.
-6. Confirm the upload includes modified files and the new `profiles/open_valley.scad` file.
+6. Confirm that GitHub lists the modified files and all new files named in the
+   current batch handoff.
 7. Enter the commit message shown in the batch handoff.
 8. Commit directly to `main`.
 9. Open the new commit and copy its short SHA into the project conversation.

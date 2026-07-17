@@ -18,6 +18,7 @@ function bed_usable(c)          = c[V_BED_USABLE];
 function profile_name(c)        = c[V_PROFILE];
 function fill_port_d(c)         = c[V_FILL_PORT_D];
 function vent_port_d(c)         = c[V_VENT_PORT_D];
+function idler_architecture_name(c) = c[V_ARCHITECTURE];
 
 function selected_profile(c)     = profile_by_name(profile_name(c));
 function profile_generator(c)    = selected_profile(c)[P_GENERATOR];

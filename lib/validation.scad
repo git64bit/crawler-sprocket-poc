@@ -14,6 +14,20 @@ module validate_variant(c) {
     assert(radial_web > 2 * shell_wall(c),
         "Inner opening leaves no useful radial casting cavity.");
     assert(n >= 1, "Segment count must be at least 1.");
+    if (has_idler_architecture(c)) {
+        assert(liner_height(c) > 0,
+            "Wear-liner axial clearances consume the full face width.");
+        assert(side_plate_radius(c) > inner_radius(c),
+            "Side plate does not overlap the cast modules.");
+        assert(module_rod_radius(c) > inner_radius(c)
+            && module_rod_radius(c) < side_plate_radius(c),
+            "Module rod must lie inside the side-plate/module overlap.");
+        assert(registration_inner_radius(c) > hub_flange_radius(c),
+            "Registration ring conflicts with the reference hub flange.");
+        assert(liner_tail_inner_radius(c) < side_plate_radius(c)
+            && liner_tail_outer_radius(c) > side_plate_radius(c),
+            "Side plate must overlap the liner retention tail.");
+    }
 
     if (profile_generator(c) == "rounded_lobe") {
         assert(tooth_round_radius(c) > 0,
@@ -52,6 +66,18 @@ module validate_variant(c) {
     echo("Shell top", "OPEN");
     echo("Segments", n);
     echo("Outer chord per segment (mm)", segment_chord(c));
+    echo("Idler architecture", architecture_name(c));
+
+    if (has_idler_architecture(c)) {
+        echo("Side-plate outside diameter (mm)", 2 * side_plate_radius(c));
+        echo("Module threaded-rod radius (mm)", module_rod_radius(c));
+        echo("Liner thickness (mm)", liner_thickness(c));
+        echo("Liner retention-tail radial range (mm)",
+            [liner_tail_inner_radius(c), liner_tail_outer_radius(c)]);
+        echo("Registration-ring diameters (mm)",
+            [2 * registration_inner_radius(c), 2 * registration_outer_radius(c)]);
+        echo("Reference shaft diameter (mm)", shaft_d(c));
+    }
 
     if (profile_generator(c) == "open_valley") {
         echo("Bushing diameter (mm)", bushing_d(c));
